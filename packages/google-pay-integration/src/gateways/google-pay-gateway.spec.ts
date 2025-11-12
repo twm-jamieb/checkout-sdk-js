@@ -149,7 +149,7 @@ describe('GooglePayGateway', () => {
                 totalPrice: '0',
             };
 
-            await gateway.initialize(getGeneric, true, 'USD');
+            await gateway.initialize(getGeneric, false, true, 'USD');
 
             expect(gateway.getTransactionInfo()).toStrictEqual(expectedInfo);
             expect(paymentIntegrationService.getState().getCartOrThrow).not.toHaveBeenCalled();
@@ -229,6 +229,22 @@ describe('GooglePayGateway', () => {
             ).mockReturnValueOnce(undefined);
 
             await gateway.initialize(getGeneric);
+
+            await expect(gateway.getRequiredData()).resolves.toStrictEqual(expectedRequiredData);
+        });
+
+        it('should require shipping address and options', async () => {
+            const expectedRequiredData = {
+                emailRequired: true,
+                shippingAddressRequired: true,
+                shippingOptionRequired: true,
+                shippingAddressParameters: {
+                    phoneNumberRequired: true,
+                    allowedCountryCodes: ['AU', 'US', 'JP'],
+                },
+            };
+
+            await gateway.initialize(getGeneric, true);
 
             await expect(gateway.getRequiredData()).resolves.toStrictEqual(expectedRequiredData);
         });

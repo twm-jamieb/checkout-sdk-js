@@ -37,10 +37,11 @@ export default class GooglePayAdyenV3 extends GooglePayGateway {
 
     async initialize(
         getPaymentMethod: () => PaymentMethod<GooglePayInitializationData>,
+        requireShippingAddress?: boolean,
         isBuyNowFlow?: boolean,
         currencyCode?: string,
     ): Promise<void> {
-        await super.initialize(getPaymentMethod, isBuyNowFlow, currencyCode);
+        await super.initialize(getPaymentMethod, requireShippingAddress, isBuyNowFlow, currencyCode);
 
         const paymentMethod = super.getPaymentMethod();
         const state = this._service.getState();
