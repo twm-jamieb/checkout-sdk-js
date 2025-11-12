@@ -5536,6 +5536,10 @@ declare interface GooglePayCustomerInitializeOptions {
      */
     buttonType?: GooglePayButtonType;
     /**
+     * Require GooglePay to provide shipping address and methods.
+     */
+    requireShippingAddress?: boolean;
+    /**
      * A callback that gets called when GooglePay fails to initialize or
      * selects a payment option.
      *

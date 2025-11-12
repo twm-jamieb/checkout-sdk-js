@@ -260,6 +260,10 @@ declare interface GooglePayCustomerInitializeOptions {
      */
     buttonType?: GooglePayButtonType;
     /**
+     * Require GooglePay to provide shipping address and methods.
+     */
+    requireShippingAddress?: boolean;
+    /**
      * A callback that gets called when GooglePay fails to initialize or
      * selects a payment option.
      *
@@ -309,6 +313,7 @@ declare class GooglePayGateway {
     private _gatewayIdentifier;
     private _paymentIntegrationService;
     private _getPaymentMethodFn?;
+    private _requireShippingAddress?;
     private _isBuyNowFlow;
     private _currencyCode?;
     private _currencyService?;
@@ -327,7 +332,7 @@ declare class GooglePayGateway {
     getTransactionInfo(): GooglePayTransactionInfo;
     getPaymentGatewayParameters(): Promise<GooglePayGatewayParameters> | GooglePayGatewayParameters;
     getCardParameters(): GooglePayCardParameters;
-    initialize(getPaymentMethod: () => PaymentMethod<GooglePayInitializationData>, isBuyNowFlow?: boolean, currencyCode?: string): Promise<void>;
+    initialize(getPaymentMethod: () => PaymentMethod<GooglePayInitializationData>, requireShippingAddress?: boolean, isBuyNowFlow?: boolean, currencyCode?: string): Promise<void>;
     handleShippingAddressChange(shippingAddress?: GooglePayFullBillingAddress): Promise<ShippingOptionParameters | undefined>;
     handleShippingOptionChange(optionId: string): Promise<import("@bigcommerce/checkout-sdk/payment-integration-api").PaymentIntegrationSelectors | undefined>;
     getTotalPrice(): string;
@@ -539,7 +544,7 @@ declare class GooglePayPaymentProcessor {
     private _paymentDataRequest?;
     private _isReadyToPayRequest?;
     constructor(_scriptLoader: GooglePayScriptLoader, _gateway: GooglePayGateway, _requestSender: RequestSender, _formPoster: FormPoster);
-    initialize(getPaymentMethod: () => PaymentMethod<GooglePayInitializationData>, googlePayPaymentOptions?: GooglePayPaymentOptions, isBuyNowFlow?: boolean, currencyCode?: string): Promise<void>;
+    initialize(getPaymentMethod: () => PaymentMethod<GooglePayInitializationData>, googlePayPaymentOptions?: GooglePayPaymentOptions, requireShippingAddress?: boolean, isBuyNowFlow?: boolean, currencyCode?: string): Promise<void>;
     initializeWidget(): Promise<void>;
     getNonce(methodId: string): Promise<string>;
     extraPaymentData(): Promise<import("./types").ExtraPaymentData | undefined>;
